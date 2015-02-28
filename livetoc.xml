@@ -7,7 +7,7 @@
     <license>GNU GPL v.2</license>
     <authorEmail>sasha@campanelli.ru</authorEmail>
     <authorUrl>http://campanelli.ru</authorUrl>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Плагин, позволяющий скрывать / показывать текст под заголовком.</description>
     <files>
         <filename plugin="livetoc">livetoc.php</filename>
