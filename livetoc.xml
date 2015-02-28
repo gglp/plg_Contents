@@ -10,7 +10,7 @@
     <version>1.0.0</version>
     <description>Плагин, позволяющий скрывать / показывать текст под заголовком.</description>
     <files>
-        <filename plugin="LiveTOC">livetoc.php</filename>
+        <filename plugin="livetoc">livetoc.php</filename>
         <filename>index.html</filename>
     </files>
 </extension>
