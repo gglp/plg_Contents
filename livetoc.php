@@ -76,8 +76,11 @@ class PlgContentLiveTOC extends JPlugin {
             if ($existsTextBlocks) {
                 $article->text =
                         "<div style=\"float:right\" class=\"well\">"
-                        ."<a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').show();\">Развернуть всё</a><br/>"
-                        ."<a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').hide();\">Свернуть всё</a>"
+                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').show();\">Развернуть всё</a><br/>"
+                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').hide();\">Свернуть всё</a>"
+			            ."  <div style=\"text-align:right;\">"
+				        ."      <a style=\"text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; \" target=\"_blank\" href=\"http://campanelli.ru/programming/24-livetoc\">Live TOC</a>"
+			            ."  </div>"
                         ."</div>"
                         .$article->text
                     ;
