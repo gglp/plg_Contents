@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 class PlgContentLiveTOC extends JPlugin {
 
     public function onContentPrepare($context, &$article, &$params, $page = 0) {
-        if ($context == 'com_content.article' || $context == 'com_content.featured' || $context == 'com_content.category') {
+        if ($context == 'com_content.article') {
 
             /* Порядок действий:
              * 1. Найти все теги <h...>
@@ -29,13 +29,14 @@ class PlgContentLiveTOC extends JPlugin {
             $headerPosition = JString::strpos($article->text, "<h", $offset);
 
             $i = 1; // Счётчик блоков
+            $existsTextBlocks = FALSE; // Флаг по наличию текстовых блоков
 
             while ($headerPosition !== FALSE) {
                 $headerLevel = JString::substr($article->text, $headerPosition + 2, 1);         // Определили уровень тега
                 $headerClose = (int) JString::strpos($article->text, "</h" . $headerLevel, $headerPosition);  // Определили позицию закрывающего тега
-
                 // Найдём подходящий граничный тег, чтобы закрыть блок
-                $nextHeaderFinded = FALSE;
+                $nextHeaderFinded = FALSE; // Показывает, что следующий блок неменьшего уровня найден
+                $blockIsText = TRUE; // Показывает, что блок текстовый без вложенных заголовков
                 $nextHeaderPosition = $headerPosition + 1;
                 while ($nextHeaderFinded === FALSE) {
                     $endOfBlock = JString::strpos($article->text, "<h", $nextHeaderPosition);      // Нашли следующий тег
@@ -50,21 +51,39 @@ class PlgContentLiveTOC extends JPlugin {
                             $nextHeaderFinded = TRUE;
                         } else {
                             $nextHeaderPosition++;
+                            $blockIsText = FALSE;
                         }
                     }
                 }
 
                 // Добавим начало блока после заголовка
-                $article->text = JString::substr_replace($article->text, "<div id=\"block$i\">", $headerClose + 5, 0);
+                if ($blockIsText) {
+                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\" class=\"livetoc_text\">", $headerClose + 5, 0);
+                    $existsTextBlocks = TRUE;
+                } else {
+                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\">", $headerClose + 5, 0);
+                }
                 // Добавим скрипт в заголовок
-                $article->text = JString::substr_replace($article->text, " onclick=\"jQuery('#block$i').slideToggle();\"", $headerPosition + 3, 0);
+                $article->text = JString::substr_replace($article->text, " onclick=\"jQuery('#livetoc_block$i').slideToggle();\"", $headerPosition + 3, 0);
 
                 // Найдём следующий заголовок
                 $offset = $headerPosition + 1;
                 $i++;
                 $headerPosition = JString::strpos($article->text, "<h", $offset);
             }
+            
+            // Если существуют текстовые блоки, добавить div с ссылками свернуть / развернуть
+            if ($existsTextBlocks) {
+                $article->text =
+                        "<div style=\"float:right\" class=\"well\">"
+                        ."<a href=\"#\" onclick=\"jQuery('.livetoc_text').show();\">Развернуть</a><br/>"
+                        ."<a href=\"#\" onclick=\"jQuery('.livetoc_text').hide();\">Свернуть</a>"
+                        ."</div>"
+                        .$article->text
+                    ;
+            }
         }
         return true;
     }
+
 }
