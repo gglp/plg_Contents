@@ -58,10 +58,10 @@ class PlgContentLiveTOC extends JPlugin {
 
                 // Добавим начало блока после заголовка
                 if ($blockIsText) {
-                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\" class=\"livetoc_text\">", $headerClose + 5, 0);
+                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\" class=\"livetoc-box livetoc-box-text\">", $headerClose + 5, 0);
                     $existsTextBlocks = TRUE;
                 } else {
-                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\">", $headerClose + 5, 0);
+                    $article->text = JString::substr_replace($article->text, "<div id=\"livetoc_block$i\" class=\"livetoc-box\">", $headerClose + 5, 0);
                 }
                 // Добавим скрипт в заголовок
                 $article->text = JString::substr_replace($article->text, " onclick=\"jQuery('#livetoc_block$i').slideToggle();\"", $headerPosition + 3, 0);
@@ -76,8 +76,8 @@ class PlgContentLiveTOC extends JPlugin {
             if ($existsTextBlocks) {
                 $article->text =
                         "<div style=\"float:right\" class=\"well\">"
-                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').show();\">Развернуть всё</a><br/>"
-                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc_text').hide();\">Свернуть всё</a>"
+                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc-box').show();\">Развернуть всё</a><br/>"
+                        ."  <a href=\"javascript:void(0)\" onclick=\"jQuery('.livetoc-box-text').hide();\">Свернуть всё</a>"
 			            ."  <div style=\"text-align:right;\">"
 				        ."      <a style=\"text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; \" target=\"_blank\" href=\"http://campanelli.ru/programming/24-livetoc\">Live TOC</a>"
 			            ."  </div>"
